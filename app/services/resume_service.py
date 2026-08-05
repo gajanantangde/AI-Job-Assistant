@@ -14,3 +14,30 @@ def create_resume(db: Session, resume: ResumeCreate):
     db.refresh(new_resume)
 
     return new_resume
+def get_all_resumes(db: Session):
+    return db.query(Resume).all()
+
+def get_resume_by_id(db: Session, resume_id:int):
+    return db.query(Resume).filter(Resume.id == resume_id).first()
+
+def update_resume(db: Session, resume_id: int, resume: ResumeCreate):
+    existing_resume = db.query(Resume).filter(Resume.id == resume_id).first()
+
+    if existing_resume:
+        existing_resume.full_name = resume.full_name
+        existing_resume.email = resume.email
+        existing_resume.phone = resume.phone
+
+        db.commit()
+        db.refresh(existing_resume)
+
+    return existing_resume
+
+def delete_resume(db: Session, resume_id: int):
+    resume = db.query(Resume).filter(Resume.id == resume_id).first()
+
+    if resume:
+        db.delete(resume)
+        db.commit()
+
+    return {"message": "Resume deleted successfully"}
