@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from app.database.database import Base, engine
 from app.models.resume import Resume
 from app.routers.resume_router import router as resume_router
-
+from app.routers.upload_router import router as upload_router
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)
@@ -21,3 +21,5 @@ def home():
     return{
         "message":"Hello Gaju!"
     }
+
+app.include_router(upload_router)
