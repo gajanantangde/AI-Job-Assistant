@@ -41,3 +41,9 @@ def delete_resume(db: Session, resume_id: int):
         db.commit()
 
     return {"message": "Resume deleted successfully"}
+
+def get_resume_by_id(db, resume_id):
+
+    return db.query(Resume).filter(
+        Resume.id == resume_id
+    ).first()

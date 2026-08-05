@@ -4,6 +4,11 @@ from app.database.database import Base, engine
 from app.models.resume import Resume
 from app.routers.resume_router import router as resume_router
 from app.routers.upload_router import router as upload_router
+from app.routers.job_router import router as job_router
+from app.models.job import Job
+from app.routers.match_router import router as match_router
+
+
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)
@@ -23,3 +28,5 @@ def home():
     }
 
 app.include_router(upload_router)
+app.include_router(job_router)
+app.include_router(match_router)
