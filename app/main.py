@@ -7,7 +7,7 @@ from app.routers.upload_router import router as upload_router
 from app.routers.job_router import router as job_router
 from app.models.job import Job
 from app.routers.match_router import router as match_router
-
+from app.routers.ats_router import router as ats_router
 
 
 # Create all database tables
@@ -30,3 +30,4 @@ def home():
 app.include_router(upload_router)
 app.include_router(job_router)
 app.include_router(match_router)
+app.include_router(ats_router)
