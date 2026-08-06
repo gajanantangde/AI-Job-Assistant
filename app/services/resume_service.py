@@ -5,20 +5,22 @@ from app.schemas.resume_schema import ResumeCreate
 
 def create_resume(db: Session, resume: ResumeCreate):
     new_resume = Resume(
-        full_name=resume.full_name,
-        email=resume.email,
-        phone=resume.phone,
+    full_name=resume.full_name,
+    email=resume.email,
+    phone=resume.phone,
 
-        linkedin=resume.linkedin,
-        github=resume.github,
-        location=resume.location,
-        summary=resume.summary,
+    linkedin=resume.linkedin,
+    github=resume.github,
+    location=resume.location,
+    summary=resume.summary,
 
-        skills=resume.skills,
-        education=resume.education,
-        experience=resume.experience,
-        projects=resume.projects,
-        certifications=resume.certifications
+    skills=resume.skills,
+    education=resume.education,
+    experience=resume.experience,
+    projects=resume.projects,
+    certifications=resume.certifications,
+
+    resume_file=resume.resume_file
     )
 
     db.add(new_resume)
@@ -54,7 +56,8 @@ def update_resume(db: Session, resume_id: int, resume: ResumeCreate):
         existing_resume.experience = resume.experience
         existing_resume.projects = resume.projects
         existing_resume.certifications = resume.certifications
-
+        existing_resume.resume_file = resume.resume_file
+        
         db.commit()
         db.refresh(existing_resume)
 

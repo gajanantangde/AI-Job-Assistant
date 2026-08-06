@@ -11,7 +11,7 @@ def analyze_resume(resume_skills, job_skills):
     matched = []
 
     missing = []
-
+    resume_suggestions = []
     resume_set = {
         skill.strip().lower()
         for skill in resume_skills
@@ -25,6 +25,10 @@ def analyze_resume(resume_skills, job_skills):
         else:
             missing.append(skill)
 
+            resume_suggestions.append(
+                f"Learn {skill}"
+            )
+
     if score >= 80:
         recommendation = "Excellent Match"
     elif score >= 60:
@@ -35,8 +39,10 @@ def analyze_resume(resume_skills, job_skills):
         recommendation = "Needs Improvement"
 
     return {
-        "score": score,
-        "matched_skills": matched,
-        "missing_skills": missing,
-        "recommendation": recommendation
+    "score": score,
+    "matched_skills": matched,
+    "missing_skills": missing,
+    "resume_suggestions": resume_suggestions,
+    "recommendation": recommendation
+
     }

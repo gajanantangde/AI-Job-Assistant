@@ -16,3 +16,5 @@ class ResumeCreate(BaseModel):
     experience: str | None = None
     projects: str | None = None
     certifications: str | None = None
+    
+    resume_file: str | None = None

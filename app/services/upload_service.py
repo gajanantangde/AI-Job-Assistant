@@ -37,7 +37,10 @@ def save_resume(file: UploadFile):
     education=parsed_data.get("education", ""),
     experience=parsed_data.get("experience", ""),
     projects=parsed_data.get("projects", ""),
-    certifications=""
+    certifications="",
+
+    # NEW
+    resume_file=file.filename,
     )
     saved_resume = create_resume(db, resume)
     db.close()
