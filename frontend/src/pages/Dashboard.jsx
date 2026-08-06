@@ -1,36 +1,50 @@
 import { useEffect, useState } from "react";
 
-import DashboardCard from "../components/DashboardCard";
-import "../styles/Dashboard.css";
+import DashboardGrid from "../components/dashboard/DashboardGrid";
+import StatusPieChart from "../components/dashboard/StatusPieChart";
+import RecentApplications from "../components/dashboard/RecentApplications";
 
 import {
-  getResumes,
-  getApplications,
-  getJobs,
+  getDashboardStats,
+  getRecentApplications,
 } from "../services/dashboardService";
 
+import QuickActions from "../components/dashboard/QuickActions";
+
+
 function Dashboard() {
-  const [resumeCount, setResumeCount] = useState(0);
-  const [applicationCount, setApplicationCount] = useState(0);
-  const [jobCount, setJobCount] = useState(0);
+
+  const [stats, setStats] = useState({
+    total_resumes: 0,
+    total_applications: 0,
+    applied: 0,
+    assessment: 0,
+    interview: 0,
+    hr_round: 0,
+    offer: 0,
+    rejected: 0,
+    joined: 0,
+  });
+
+  const [applications, setApplications] = useState([]);
 
   useEffect(() => {
-    async function loadDashboard() {
-      try {
-        const resumes = await getResumes();
-        const applications = await getApplications();
-        const jobs = await getJobs();
-
-        setResumeCount(resumes.length);
-        setApplicationCount(applications.length);
-        setJobCount(jobs.length);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
     loadDashboard();
   }, []);
+
+  const loadDashboard = async () => {
+    try {
+
+      const statsData = await getDashboardStats();
+      const recentData = await getRecentApplications();
+
+      setStats(statsData);
+      setApplications(recentData);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="main-content">
@@ -39,34 +53,18 @@ function Dashboard() {
         Dashboard
       </h1>
 
-      <div className="dashboard-grid">
+      <DashboardGrid
+        stats={stats}
+      />
 
-        <DashboardCard
-          title="Total Resumes"
-          value={resumeCount}
-          color="#2563EB"
-        />
+      <StatusPieChart
+        stats={stats}
+      />
 
-        <DashboardCard
-          title="Applications"
-          value={applicationCount}
-          color="#10B981"
-        />
-
-        <DashboardCard
-          title="Jobs"
-          value={jobCount}
-          color="#F59E0B"
-        />
-
-        <DashboardCard
-          title="ATS Score"
-          value="82%"
-          color="#8B5CF6"
-        />
-
-      </div>
-
+      <RecentApplications
+        applications={applications}
+      />
+      <QuickActions />
     </div>
   );
 }

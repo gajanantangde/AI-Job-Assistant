@@ -10,6 +10,7 @@ import {
   Home,
   Description,
   Analytics,
+  EditDocument,
   Article,
   Work,
 } from "@mui/icons-material";
@@ -43,7 +44,17 @@ function MobileSidebar() {
           <ListItemIcon><Analytics /></ListItemIcon>
           <ListItemText primary="ATS Analyzer" />
         </ListItemButton>
+        <ListItemButton
+          component={NavLink}
+          to="/tailor"
+          onClick={toggleSidebar}
+        >
+          <ListItemIcon>
+            <EditDocument />
+          </ListItemIcon>
 
+          <ListItemText primary="Resume Tailoring" />
+        </ListItemButton>
         <ListItemButton component={NavLink} to="/generator" onClick={toggleSidebar}>
           <ListItemIcon><Article /></ListItemIcon>
           <ListItemText primary="Resume Generator" />

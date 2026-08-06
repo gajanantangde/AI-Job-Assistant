@@ -10,6 +10,7 @@ import {
   FiSearch,
   FiBriefcase,
   FiFilePlus,
+  FiEdit,
   FiSettings,
 } from "react-icons/fi";
 
@@ -70,7 +71,12 @@ function DesktopSidebar() {
         >
           ATS Analyzer
         </MenuItem>
-
+        <MenuItem
+          icon={<FiEdit />}
+          component={<NavLink to="/tailor" />}
+        >
+          Resume Tailoring
+        </MenuItem>
         <MenuItem
           icon={<FiFilePlus />}
           component={<NavLink to="/generator" />}

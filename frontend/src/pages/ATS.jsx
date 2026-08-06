@@ -11,6 +11,14 @@ import {
 
 import { getAllResumes } from "../services/resumeService";
 import { analyzeResume } from "../services/atsService";
+import {
+  Grid,
+} from "@mui/material";
+
+import ATSScoreCard from "../components/ats/ATSScoreCard";
+import SkillsCard from "../components/ats/SkillsCard";
+import SuggestionsCard from "../components/ats/SuggestionsCard";
+
 
 function ATS() {
 
@@ -109,55 +117,46 @@ function ATS() {
         </Button>
 
       </Paper>
-          {analysis && (
+         {analysis && (
 
             <>
-                <Typography
-                    variant="h5"
-                    mt={4}
-                    mb={2}
-                >
-                    ATS Result
-                </Typography>
 
-                <Typography>
-                    <strong>Score:</strong> {analysis.score}%
-                </Typography>
+              <ATSScoreCard
+                score={analysis.score}
+                recommendation={analysis.recommendation}
+              />
 
-                <Typography sx={{ mt: 1 }}>
-                    <strong>Recommendation:</strong>{" "}
-                    {analysis.recommendation}
-                </Typography>
+              <Grid
+                container
+                spacing={3}
+                sx={{ mt: 1 }}
+              >
 
-                <Typography sx={{ mt: 2 }}>
-                    <strong>Matched Skills:</strong>
-                </Typography>
+                <Grid size={{ xs: 12, md: 6 }}>
 
-                <ul>
-                    {analysis.matched_skills.map((skill, index) => (
-                        <li key={index}>{skill}</li>
-                    ))}
-                </ul>
+                  <SkillsCard
+                    title="Matched Skills"
+                    skills={analysis.matched_skills}
+                    color="success"
+                  />
 
-                <Typography>
-                    <strong>Missing Skills:</strong>
-                </Typography>
+                </Grid>
 
-                <ul>
-                    {analysis.missing_skills.map((skill, index) => (
-                        <li key={index}>{skill}</li>
-                    ))}
-                </ul>
+                <Grid size={{ xs: 12, md: 6 }}>
 
-                <Typography>
-                    <strong>Suggestions:</strong>
-                </Typography>
+                  <SkillsCard
+                    title="Missing Skills"
+                    skills={analysis.missing_skills}
+                    color="error"
+                  />
 
-                <ul>
-                    {analysis.resume_suggestions.map((item, index) => (
-                        <li key={index}>{item}</li>
-                    ))}
-                </ul>
+                </Grid>
+
+              </Grid>
+
+              <SuggestionsCard
+                suggestions={analysis.resume_suggestions}
+              />
 
             </>
 

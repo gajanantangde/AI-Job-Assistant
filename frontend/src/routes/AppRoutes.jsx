@@ -7,6 +7,8 @@ import Resume from "../pages/Resume";
 import ATS from "../pages/ATS";
 import ResumeGenerator from "../pages/ResumeGenerator";
 import JobTracker from "../pages/JobTracker";
+import ResumeTailor from "../pages/ResumeTailor";
+
 
 function AppRoutes() {
   return (
@@ -31,7 +33,10 @@ function AppRoutes() {
             path="/tracker"
             element={<JobTracker />}
           />
-
+          <Route
+              path="/tailor"
+              element={<ResumeTailor />}
+          />
         </Route>
 
       </Routes>

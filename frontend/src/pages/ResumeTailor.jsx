@@ -7,78 +7,56 @@ import {
   TextField,
   Button,
   MenuItem,
-  Alert,
 } from "@mui/material";
 
 import { getAllResumes } from "../services/resumeService";
-import {
-    generateResume,
-    downloadGeneratedResume,
-} from "../services/resumeGeneratorService";
+import { tailorResume } from "../services/resumeTailorService";
 
-function ResumeGenerator() {
+function ResumeTailor() {
 
   const [resumes, setResumes] = useState([]);
   const [resumeId, setResumeId] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [result, setResult] = useState(null);
-  const [fileFormat, setFileFormat] = useState("docx");
 
   useEffect(() => {
     loadResumes();
   }, []);
 
   const loadResumes = async () => {
-
     const data = await getAllResumes();
-
     setResumes(data);
-
   };
 
-  const handleGenerate = async () => {
+  const handleTailor = async () => {
 
     if (!resumeId || !jobDescription) {
-
       alert("Please select a resume and enter a job description.");
-
       return;
-
     }
 
-    try {
+    const response = await tailorResume(
+      resumeId,
+      jobDescription
+    );
 
-      const response = await generateResume(
-    resumeId,
-    jobDescription,
-    fileFormat
-);
-
-      setResult(response);
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert("Resume generation failed.");
-
-    }
+    setResult(response);
 
   };
 
   return (
 
-    <Container maxWidth="md" sx={{ py:4 }}>
+    <Container maxWidth="md" sx={{ py: 4 }}>
 
       <Typography
         variant="h4"
         mb={4}
         fontWeight={700}
       >
-        AI Resume Generator
+        Resume Tailoring
       </Typography>
 
-      <Paper sx={{ p:4 }}>
+      <Paper sx={{ p: 4 }}>
 
         <TextField
           select
@@ -101,22 +79,7 @@ function ResumeGenerator() {
           ))}
 
         </TextField>
-        <TextField
-            select
-            fullWidth
-            label="Output Format"
-            margin="normal"
-            value={fileFormat}
-            onChange={(e) => setFileFormat(e.target.value)}
-        >
-            <MenuItem value="docx">
-                Microsoft Word (.docx)
-            </MenuItem>
 
-            <MenuItem value="pdf">
-                PDF (.pdf)
-            </MenuItem>
-        </TextField>
         <TextField
           fullWidth
           multiline
@@ -128,50 +91,48 @@ function ResumeGenerator() {
         />
 
         <Button
-          fullWidth
           variant="contained"
+          fullWidth
           sx={{ mt:3 }}
-          onClick={handleGenerate}
+          onClick={handleTailor}
         >
-          Generate Resume
+          Tailor Resume
         </Button>
 
         {result && (
 
-          <Alert
-            severity="success"
-            sx={{ mt:4 }}
+          <Paper
+            elevation={3}
+            sx={{
+              mt:4,
+              p:3,
+            }}
           >
 
-            <Typography fontWeight={700}>
-              Resume Generated Successfully
-            </Typography>
-
-            <Typography>
+            <Typography
+              variant="h5"
+              mb={2}
+            >
               ATS Score: {result.analysis.score}%
             </Typography>
 
-            <Typography>
-              File:
+            <Typography
+              variant="h6"
+            >
+              Tailoring Suggestions
             </Typography>
 
-            <Typography>
-              {result.file}
-            </Typography>
-          <Button
-            variant="outlined"
-            sx={{ mt: 2 }}
-            onClick={() => {
+            <ul>
 
-                const filename = result.file.split("/").pop();
+              {result.tailoring_suggestions.map((item,index)=>(
 
-                downloadGeneratedResume(filename);
+                <li key={index}>{item}</li>
 
-            }}
-        >
-            Download Resume
-        </Button>
-          </Alert>
+              ))}
+
+            </ul>
+
+          </Paper>
 
         )}
 
@@ -183,4 +144,4 @@ function ResumeGenerator() {
 
 }
 
-export default ResumeGenerator;
+export default ResumeTailor;
