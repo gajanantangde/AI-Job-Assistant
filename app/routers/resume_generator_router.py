@@ -11,6 +11,10 @@ from app.services.ats_service import analyze_resume
 
 from app.parser.job_parser import extract_job_skills
 from app.generator.resume_generator import generate_resume
+from app.generator.resume_pdf_generator import generate_resume_pdf
+
+from fastapi.responses import FileResponse
+import os
 
 router = APIRouter(
     prefix="/generator",
@@ -57,15 +61,49 @@ def generate_resume_api(
         {}
     )
 
-    output_path = f"generated_resumes/resume_{resume.id}.docx"
+    if request.format == "pdf":
 
-    generate_resume(
-        resume_data,
-        output_path
-    )
+        output_path = f"generated_resumes/resume_{resume.id}.pdf"
+
+    else:
+
+        output_path = f"generated_resumes/resume_{resume.id}.docx"
+
+    if request.format == "pdf":
+
+        generate_resume_pdf(
+            resume_data,
+            output_path
+        )
+
+    else:
+
+        generate_resume(
+            resume_data,
+            output_path
+        )
 
     return {
         "message": "Resume generated successfully",
         "analysis": analysis,
         "file": output_path
     }
+
+@router.get("/download/{filename}")
+def download_resume(filename: str):
+
+    file_path = os.path.join(
+        "generated_resumes",
+        filename
+    )
+
+    if not os.path.exists(file_path):
+        return {
+            "message": "File not found"
+        }
+
+    return FileResponse(
+        path=file_path,
+        filename=filename,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )

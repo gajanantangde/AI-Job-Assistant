@@ -14,7 +14,7 @@ from app.routers.job_application_router import router as job_application_router
 from app.routers.resume_tailor_router import router as resume_tailor_router
 from app.routers.resume_generator_router import router as resume_generator_router
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.routers.dashboard_router import router as dashboard_router
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)
@@ -52,3 +52,4 @@ app.include_router(ai_router)
 app.include_router(job_application_router)
 app.include_router(resume_tailor_router)
 app.include_router(resume_generator_router)
+app.include_router(dashboard_router)

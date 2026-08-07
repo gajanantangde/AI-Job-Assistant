@@ -29,3 +29,20 @@ export const getRecentApplications = async () => {
     return response.data;
 
 };
+
+export const getApplicationsBySource = async () => {
+  const response = await api.get(
+    "/dashboard/applications-by-source"
+  );
+
+  return response.data;
+};
+
+export const getUpcomingInterviews = async () => {
+  const response = await api.get(
+    "/dashboard/upcoming-interviews"
+  );
+
+  return response.data;
+};
+

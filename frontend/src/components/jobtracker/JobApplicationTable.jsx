@@ -212,10 +212,11 @@ const handleDeleteCancel = () => {
 
       </Table>
 
-      <EditJobDialog
+        <EditJobDialog
         open={open}
         handleClose={handleClose}
         application={selectedApplication}
+        onUpdated={loadApplications}
       />
         <ConfirmDialog
         open={confirmOpen}
